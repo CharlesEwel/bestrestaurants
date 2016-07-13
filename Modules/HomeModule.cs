@@ -12,6 +12,12 @@ namespace BestRestaurant
     {
       Get["/"]=_=>View["index.cshtml"];
 
+      Delete["/"]=_=>{
+        Cuisine.DeleteAll();
+        Restaurant.DeleteAll();
+        return View["index.cshtml"];
+      };
+
       Get["/cuisines"]=_=>{
         List<Cuisine> allCuisines = Cuisine.GetAll();
         return View["cuisines.cshtml", allCuisines];
