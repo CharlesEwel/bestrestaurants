@@ -25,7 +25,7 @@ namespace BestRestaurant.Object
     }
 
     [Fact]
-    public void Test_Save_SavesToDatabase()
+    public void Test_Save_SavesSomethingToDatabase()
     {
       //Arrange
       Restaurant newRestaurant = new Restaurant("McDonalds", 1);
@@ -36,6 +36,29 @@ namespace BestRestaurant.Object
 
       //Assert
       Assert.Equal(1, result);
+    }
+    [Fact]
+    public void Test_Equals_ReturnsTrueIfNameAndCuisineAreIdentical()
+    {
+      //Arrange
+      Restaurant firstRestaurant = new Restaurant("McDonalds", 1);
+      Restaurant secondRestaurant = new Restaurant("McDonalds", 1);
+
+      //Assert
+      Assert.Equal(firstRestaurant, secondRestaurant);
+    }
+    [Fact]
+    public void Test_Save_SavesCorrectObjectToDatabase()
+    {
+      //Arrange
+      Restaurant newRestaurant = new Restaurant("McDonalds", 1);
+
+      //Act
+      newRestaurant.Save();
+      Restaurant savedRestaurant = Restaurant.GetAll()[0];
+
+      //Assert
+      Assert.Equal(newRestaurant, savedRestaurant);
     }
     public void Dispose()
     {

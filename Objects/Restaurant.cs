@@ -39,6 +39,17 @@ namespace BestRestaurant.Object
         _cuisineId = newCuisineId;
     }
 
+    public override bool Equals(System.Object otherRestaurant)
+    {
+      if(!(otherRestaurant is Restaurant)) return false;
+      else
+      {
+        Restaurant newRestaurant = (Restaurant) otherRestaurant;
+        bool nameEquality = this.GetName() == newRestaurant.GetName();
+        bool cuisineEquality = this.GetCuisineId() == newRestaurant.GetCuisineId();
+        return(nameEquality && cuisineEquality);
+      }
+    }
 
     public static List<Restaurant> GetAll()
     {
