@@ -60,6 +60,19 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(newRestaurant, savedRestaurant);
     }
+    [Fact]
+    public void Test_Find_ReturnsASpecificRestaurantObject()
+    {
+      //Arrange
+      Restaurant newRestaurant = new Restaurant("McDonalds", 1);
+      newRestaurant.Save();
+
+      //Act
+      Restaurant foundRestaurant = Restaurant.Find(newRestaurant.GetId());
+
+      //Assert
+      Assert.Equal(newRestaurant, foundRestaurant);
+    }
     public void Dispose()
     {
       Restaurant.DeleteAll();

@@ -114,6 +114,42 @@ namespace BestRestaurant.Object
         conn.Close();
       }
     }
+    public static Restaurant Find(int restaurantId)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM restaurants WHERE id = @restaurantId;", conn);
+
+      SqlParameter restaurantIdParameter = new SqlParameter();
+      restaurantIdParameter.ParameterName = "@restaurantId";
+      restaurantIdParameter.Value = restaurantId.ToString();
+
+      cmd.Parameters.Add(restaurantIdParameter);
+
+      int foundRestaurantId = 0;
+      string restaurantName = null;
+      int restaurantCuisineId = 0;
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        foundRestaurantId = rdr.GetInt32(0);
+        restaurantName = rdr.GetString(1);
+        restaurantCuisineId = rdr.GetInt32(2);
+      }
+      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, foundRestaurantId);
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return newRestaurant;
+    }
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
