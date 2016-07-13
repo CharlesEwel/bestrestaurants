@@ -139,6 +139,7 @@ namespace BestRestaurant.Object
     }
     public static Cuisine Find(int cuisineId)
     {
+
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr;
       conn.Open();
@@ -173,10 +174,15 @@ namespace BestRestaurant.Object
     }
     public void Delete()
     {
+      List<Restaurant> restaurantsToDelete = this.GetRestaurants();
+      foreach (Restaurant item in restaurantsToDelete)
+      {
+        item.Delete();
+      }
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine WHERE id = @CuisineId; DELETE FROM restaurants WHERE cuisine_id = @CuisineId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine WHERE id = @CuisineId;", conn);
 
       SqlParameter cuisineIdParameter = new SqlParameter();
       cuisineIdParameter.ParameterName = "@CuisineId";

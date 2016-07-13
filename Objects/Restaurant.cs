@@ -133,6 +133,46 @@ namespace BestRestaurant.Object
       }
       return allRestaurants;
     }
+
+    public List<Review> GetReviews()
+    {
+      List<Review> allReviewsMatchingRestaurant = new List<Review>{};
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM reviews WHERE restaurant_id = @restaurantId;", conn);
+
+      SqlParameter restaurantIdParameter = new SqlParameter();
+      restaurantIdParameter.ParameterName = "@restaurantId";
+      restaurantIdParameter.Value = this.GetId().ToString();
+
+
+
+      cmd.Parameters.Add(restaurantIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int reviewId = rdr.GetInt32(0);
+        string reviewName = rdr.GetString(1);
+        int reviewRestaurantId = rdr.GetInt32(2);
+        Review newReview = new Review(reviewName, reviewRestaurantId, reviewId);
+        allReviewsMatchingRestaurant.Add(newReview);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allReviewsMatchingRestaurant;
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();
@@ -205,6 +245,11 @@ namespace BestRestaurant.Object
     }
     public void Delete()
     {
+      List<Review> reviewsToDelete = this.GetReviews();
+      foreach (Review item in reviewsToDelete)
+      {
+        item.Delete();
+      }
       SqlConnection conn = DB.Connection();
       conn.Open();
 

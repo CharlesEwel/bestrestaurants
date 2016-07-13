@@ -93,11 +93,46 @@ namespace BestRestaurant.Object
       Assert.Equal(expectedCuisine, resultingCuisine);
       Assert.Equal(expectedResult, result);
     }
+    [Fact]
+    public void Test_Delete_DeletesCuisineAndRestaurantsAndReviewsByCuisineId()
+    {
+      //Arrange
+      Cuisine firstCuisine = new Cuisine("Fast Food");
+      firstCuisine.Save();
+      Cuisine secondCuisine = new Cuisine("Mexican");
+      secondCuisine.Save();
+
+      Restaurant firstRestaurant = new Restaurant("McDonalds", firstCuisine.GetId());
+      firstRestaurant.Save();
+      Restaurant secondRestaurant = new Restaurant("Chipotle", secondCuisine.GetId());
+      secondRestaurant.Save();
+
+      Review firstReview = new Review("Test", firstRestaurant.GetId());
+      firstReview.Save();
+      Review secondReview = new Review("Test2", secondRestaurant.GetId());
+      secondReview.Save();
+
+      List<Cuisine> expectedCuisine = new List<Cuisine>{firstCuisine};
+      List<Restaurant> expectedRestaurant = new List<Restaurant> {firstRestaurant};
+      List<Review> expectedReview = new List<Review> {firstReview};
+
+      //Act
+      secondCuisine.Delete();
+
+      List<Cuisine> resultingCuisine = Cuisine.GetAll();
+      List<Restaurant> resultingRestaurant = Restaurant.GetAll();
+      List<Review> resultingReview = Review.GetAll();
+      //Assert
+      Assert.Equal(expectedCuisine, resultingCuisine);
+      Assert.Equal(expectedRestaurant, resultingRestaurant);
+      Assert.Equal(expectedReview, resultingReview);
+    }
 
     public void Dispose()
     {
       Cuisine.DeleteAll();
       Restaurant.DeleteAll();
+      Review.DeleteAll();
     }
 
   }

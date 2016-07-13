@@ -106,9 +106,28 @@ namespace BestRestaurant.Object
       Assert.Equal(firstRestaurant.GetName(), resultRestaurant.GetName());
       Assert.Equal(firstRestaurant.GetCuisineId(), resultRestaurant.GetCuisineId());
     }
+    [Fact]
+    public void Test_GetReviews_FindsReviewsByRestaurantId()
+    {
+      //Arrange
+      Restaurant newRestaurant = new Restaurant("Fast Food", 1);
+      newRestaurant.Save();
+
+      Review firstReview = new Review("McDonalds", newRestaurant.GetId());
+
+      firstReview.Save();
+      Review secondReview = new Review("Dennys", 2);
+      secondReview.Save();
+      List<Review> expectedResult = new List<Review> {firstReview};
+      //Act
+      List<Review> result = newRestaurant.GetReviews();
+      //Assert
+      Assert.Equal(expectedResult, result);
+    }
     public void Dispose()
     {
       Restaurant.DeleteAll();
+      Review.DeleteAll();
     }
   }
 }
