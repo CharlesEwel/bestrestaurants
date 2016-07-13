@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add a New Restaurant</title>
+  </head>
+  <body>
+      <form class="form-group" action='/restaurant/success/@Model["restaurant"].GetId()' method="post">
+        <input type="hidden" name="_method" value="PATCH">
+        <input type="hidden" name="restaurant-id" value='@Model["restaurant"].GetId()'>
+        <label for="restaurant-name">Enter Restaurant Name:</label>
+        <input type="text" name="restaurant-name" required value='@Model["restaurant"].GetName()'>
+        <select name="cuisine-id">
+          @foreach (var cuisine in Model["cuisines"])
+          {
+
+            if (@model["restaurant"].GetCuisineId() == cuisine.GetId())
+            {
+              <option selected="selected" value="@cuisine.GetId()">@cuisine.GetName()</option>
+            }
+            else
+            {
+                <option value="@cuisine.GetId()">@cuisine.GetName()</option>
+            }
+          }
+        </select>
+        <button type="submit" name="button">Submit</button>
+      </form>
+  </body>
+</html>

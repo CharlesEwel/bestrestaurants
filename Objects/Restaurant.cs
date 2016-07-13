@@ -33,10 +33,63 @@ namespace BestRestaurant.Object
     public void SetName(string newName)
     {
         _name = newName;
+        SqlConnection conn = DB.Connection();
+        SqlDataReader rdr = null;
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("UPDATE restaurants SET name = @restaurantName where id = @id;", conn);
+
+        SqlParameter nameParameter = new SqlParameter();
+        nameParameter.ParameterName = "@restaurantName";
+        nameParameter.Value = newName;
+
+        SqlParameter idParameter = new SqlParameter();
+        idParameter.ParameterName = "@id";
+        idParameter.Value = this.GetId();
+
+        cmd.Parameters.Add(nameParameter);
+        cmd.Parameters.Add(idParameter);
+        rdr = cmd.ExecuteReader();
+
+        if (rdr != null)
+        {
+          rdr.Close();
+        }
+        if (conn != null)
+        {
+          conn.Close();
+        }
+
     }
     public void SetCuisineId(int newCuisineId)
     {
         _cuisineId = newCuisineId;
+        SqlConnection conn = DB.Connection();
+        SqlDataReader rdr = null;
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("UPDATE restaurants SET cuisine_id = @cuisineId where id = @id;", conn);
+
+        SqlParameter cuisineIdParameter = new SqlParameter();
+        cuisineIdParameter.ParameterName = "@cuisineId";
+        cuisineIdParameter.Value = newCuisineId.ToString();
+
+        SqlParameter idParameter = new SqlParameter();
+        idParameter.ParameterName = "@id";
+        idParameter.Value = this.GetId();
+
+        cmd.Parameters.Add(cuisineIdParameter);
+        cmd.Parameters.Add(idParameter);
+        rdr = cmd.ExecuteReader();
+
+        if (rdr != null)
+        {
+          rdr.Close();
+        }
+        if (conn != null)
+        {
+          conn.Close();
+        }
     }
 
     public override bool Equals(System.Object otherRestaurant)

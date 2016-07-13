@@ -68,6 +68,31 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(expectedResult, result);
     }
+    [Fact]
+    public void Test_Delete_DeletesCuisineAndRestaurantsByCuisineId()
+    {
+      //Arrange
+      Cuisine firstCuisine = new Cuisine("Fast Food");
+      firstCuisine.Save();
+      Cuisine secondCuisine = new Cuisine("Mexican");
+      secondCuisine.Save();
+
+      Restaurant firstRestaurant = new Restaurant("McDonalds", firstCuisine.GetId());
+      firstRestaurant.Save();
+      Restaurant secondRestaurant = new Restaurant("Chipotle", secondCuisine.GetId());
+      secondRestaurant.Save();
+
+      List<Cuisine> expectedCuisine = new List<Cuisine>{firstCuisine};
+      List<Restaurant> expectedResult = new List<Restaurant> {firstRestaurant};
+      //Act
+      secondCuisine.Delete();
+
+      List<Cuisine> resultingCuisine = Cuisine.GetAll();
+      List<Restaurant> result = Restaurant.GetAll();
+      //Assert
+      Assert.Equal(expectedCuisine, resultingCuisine);
+      Assert.Equal(expectedResult, result);
+    }
 
     public void Dispose()
     {

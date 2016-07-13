@@ -32,6 +32,13 @@ namespace BestRestaurant
         return View ["cuisine.cshtml", model];
       };
 
+      Delete["/cuisine/deleted/{id}"]=parameters=>{
+        Cuisine selectedCuisine = Cuisine.Find(parameters.id);
+        selectedCuisine.Delete();
+        List<Cuisine> allCuisines = Cuisine.GetAll();
+        return View["cuisines.cshtml", allCuisines];
+      };
+
       Get["/cuisine/new"]=_=>View["cuisine_new.cshtml"];
 
       Post["/cuisine/success"]=_=>{
@@ -51,6 +58,22 @@ namespace BestRestaurant
         return View["restaurant.cshtml", selectedRestaurant];
       };
 
+      Get["/restaurant/edit/{id}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var selectedRestaurant = Restaurant.Find(parameters.id);
+        var allCuisines = Cuisine.GetAll();
+        model.Add("restaurant", selectedRestaurant);
+        model.Add("cuisines", allCuisines);
+        return View["restaurant_edit.cshtml", model];
+      };
+
+      Delete["/restaurant/deleted/{id}"]=parameters=>{
+        Restaurant selectedRestaurant = Restaurant.Find(parameters.id);
+        selectedRestaurant.Delete();
+        List<Restaurant> allRestaurants = Restaurant.GetAll();
+        return View["restaurants.cshtml", allRestaurants];
+      };
+
       Get["/restaurant/new"]=_=>{
         List<Cuisine> allCuisines = Cuisine.GetAll();
         return View["restaurant_new.cshtml", allCuisines];
@@ -61,6 +84,13 @@ namespace BestRestaurant
         newRestaurant.Save();
         List<Restaurant> allRestaurants = Restaurant.GetAll();
         return View["restaurants.cshtml", allRestaurants];
+      };
+
+      Patch["/restaurant/success/{id}"]=parameters=>{
+        Restaurant selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
+        selectedRestaurant.SetName(Request.Form["restaurant-name"]);
+        selectedRestaurant.SetCuisineId(Request.Form["cuisine-id"]);
+        return View["restaurant.cshtml", selectedRestaurant];
       };
 
     }

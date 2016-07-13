@@ -73,6 +73,40 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(newRestaurant, foundRestaurant);
     }
+    [Fact]
+    public void Test_DeleteOne_DeletesASpecificRestaurantObject()
+    {
+      //Arrange
+      Restaurant firstRestaurant = new Restaurant("McDonalds", 1);
+      firstRestaurant.Save();
+      Restaurant secondRestaurant = new Restaurant("Dennys", 2);
+      secondRestaurant.Save();
+
+      //Act
+      secondRestaurant.Delete();
+      List<Restaurant> expectedRestaurant = new List<Restaurant> {firstRestaurant};
+      List<Restaurant> testRestaurant= Restaurant.GetAll();
+
+      //Assert
+      Assert.Equal(expectedRestaurant, testRestaurant);
+    }
+    [Fact]
+    public void Test_SetNameAndId_AdjustsDatabaseCorrectly()
+    {
+      // Arrange
+      Restaurant firstRestaurant = new Restaurant("McDonalds", 1);
+      firstRestaurant.Save();
+
+      //Act
+      firstRestaurant.SetName("Chipotle");
+      firstRestaurant.SetCuisineId(2);
+      Restaurant resultRestaurant = Restaurant.Find(firstRestaurant.GetId());
+
+      //Assert
+      Assert.Equal("Chipotle", resultRestaurant.GetName());
+      Assert.Equal(2, resultRestaurant.GetCuisineId());
+
+    }
     public void Dispose()
     {
       Restaurant.DeleteAll();
