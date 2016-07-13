@@ -75,7 +75,6 @@ namespace BestRestaurant.Object
       SqlDataReader rdr = null;
       conn.Open();
 
-      System.Console.WriteLine(this.GetId());
 
       SqlCommand cmd = new SqlCommand("SELECT * FROM restaurants WHERE cuisine_id = @cuisineId;", conn);
 
@@ -83,7 +82,7 @@ namespace BestRestaurant.Object
       cuisineIdParameter.ParameterName = "@cuisineId";
       cuisineIdParameter.Value = this.GetId().ToString();
 
-      System.Console.WriteLine("parameter" + cuisineIdParameter.Value);
+
 
       cmd.Parameters.Add(cuisineIdParameter);
 
@@ -91,7 +90,6 @@ namespace BestRestaurant.Object
 
       while(rdr.Read())
       {
-        System.Console.WriteLine("Made it here");
         int restaurantId = rdr.GetInt32(0);
         string restaurantName = rdr.GetString(1);
         int restaurantCuisineId = rdr.GetInt32(2);
