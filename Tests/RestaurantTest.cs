@@ -103,9 +103,8 @@ namespace BestRestaurant.Object
       Restaurant resultRestaurant = Restaurant.Find(firstRestaurant.GetId());
 
       //Assert
-      Assert.Equal("Chipotle", resultRestaurant.GetName());
-      Assert.Equal(2, resultRestaurant.GetCuisineId());
-
+      Assert.Equal(firstRestaurant.GetName(), resultRestaurant.GetName());
+      Assert.Equal(firstRestaurant.GetCuisineId(), resultRestaurant.GetCuisineId());
     }
     public void Dispose()
     {
