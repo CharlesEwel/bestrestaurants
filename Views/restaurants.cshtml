@@ -14,11 +14,13 @@
     else
     {
       <ul>
-      foreach(var restaurants in Model)
+      @foreach(var restaurant in Model)
       {
-        <li><a href="#">restaurants.GetName()</a></li>
+        <li><a href="/restaurant/@restaurant.GetId()">@restaurant.GetName()</a></li>
       }
       </ul>
     }
+    <a href="/restaurant/new">Add a new restaurant</a>
+    <a href="/">Return Home</a>
   </body>
 </html>

@@ -50,6 +50,25 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(newCuisine, foundCuisine);
     }
+    [Fact]
+    public void Test_GetRestaurants_FindsRestaurantsByCuisineId()
+    {
+      //Arrange
+      Cuisine newCuisine = new Cuisine("Fast Food");
+      newCuisine.Save();
+      System.Console.WriteLine("test id=" + newCuisine.GetId());
+      Restaurant firstRestaurant = new Restaurant("McDonalds", newCuisine.GetId());
+      System.Console.WriteLine("McD cuisine ID=" + firstRestaurant.GetCuisineId());
+      firstRestaurant.Save();
+      Restaurant secondRestaurant = new Restaurant("Dennys", 2);
+      secondRestaurant.Save();
+      List<Restaurant> expectedResult = new List<Restaurant> {firstRestaurant};
+      //Act
+      List<Restaurant> result = newCuisine.GetRestaurants();
+      //Assert
+      Assert.Equal(expectedResult, result);
+    }
+
     public void Dispose()
     {
       Cuisine.DeleteAll();

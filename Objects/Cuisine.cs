@@ -68,6 +68,47 @@ namespace BestRestaurant.Object
       return allCuisines;
     }
 
+    public List<Restaurant> GetRestaurants()
+    {
+      List<Restaurant> allRestaurantsMatchingCuisine = new List<Restaurant>{};
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      System.Console.WriteLine(this.GetId());
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM restaurants WHERE cuisine_id = @cuisineId;", conn);
+
+      SqlParameter cuisineIdParameter = new SqlParameter();
+      cuisineIdParameter.ParameterName = "@cuisineId";
+      cuisineIdParameter.Value = this.GetId().ToString();
+
+      System.Console.WriteLine("parameter" + cuisineIdParameter.Value);
+
+      cmd.Parameters.Add(cuisineIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        System.Console.WriteLine("Made it here");
+        int restaurantId = rdr.GetInt32(0);
+        string restaurantName = rdr.GetString(1);
+        int restaurantCuisineId = rdr.GetInt32(2);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        allRestaurantsMatchingCuisine.Add(newRestaurant);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allRestaurantsMatchingCuisine;
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();

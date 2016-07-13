@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add a New Restaurant</title>
+  </head>
+  <body>
+    @if(@Model.Count==0)
+    {
+      <p>
+        You must add at least one type of cuisine before you may add a restaurant. Click <a href="/cuisine/new">here</a> to do so.
+      </p>
+    }
+    else
+    {
+      <form class="form-group" action="/restaurant/success" method="post">
+        <label for="restaurant-name">Enter Restaurant Name:</label>
+        <input type="text" name="restaurant-name" required>
+        <select name="cuisine-id">
+          @foreach (var cuisine in Model)
+          {
+            <option value="@cuisine.GetId()">@cuisine.GetName()</option>
+          }
+        </select>
+        <button type="submit" name="button">Submit</button>
+      </form>
+    }
+  </body>
+</html>
