@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cuisines</title>
+  </head>
+  <body>
+    @if(@Model.Count==0)
+    {
+      <p>
+        No cuisines have been added yet.
+      </p>
+    }
+    else
+    {
+      <ul>
+      foreach(var cuisine in Model)
+      {
+        <li><a href="#">cuisine.GetName()</a></li>
+      }
+      </ul>
+    }
+  </body>
+</html>

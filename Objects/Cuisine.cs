@@ -98,6 +98,46 @@ namespace BestRestaurant.Object
         conn.Close();
       }
     }
+    public static Cuisine Find(int cuisineId)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("SELECT * FROM cuisine WHERE id = @cuisineId;", conn);
+
+      SqlParameter cuisineIdParameter = new SqlParameter();
+      cuisineIdParameter.ParameterName = "@cuisineId";
+      cuisineIdParameter.Value = cuisineId.ToString();
+
+      cmd.Parameters.Add(cuisineIdParameter);
+
+      int foundCuisineId = 0;
+      string cuisineName = null;
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        foundCuisineId = rdr.GetInt32(0);
+        cuisineName = rdr.GetString(1);
+      }
+      Cuisine newCuisine = new Cuisine(cuisineName, foundCuisineId);
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return newCuisine;
+    }
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine;", conn);
+      cmd.ExecuteNonQuery();
+    }
   }
 }

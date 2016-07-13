@@ -37,10 +37,23 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(newCuisine, savedCuisine);
     }
+    [Fact]
+    public void Test_Find_ReturnsASpecificCuisineObject()
+    {
+      //Arrange
+      Cuisine newCuisine = new Cuisine("Fast Food");
+      newCuisine.Save();
 
+      //Act
+      Cuisine foundCuisine = Cuisine.Find(newCuisine.GetId());
+
+      //Assert
+      Assert.Equal(newCuisine, foundCuisine);
+    }
     public void Dispose()
     {
-      // Restaurant.DeleteAll();
+      Cuisine.DeleteAll();
+      Restaurant.DeleteAll();
     }
 
   }
