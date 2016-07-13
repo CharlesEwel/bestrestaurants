@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add a New Review for @Model.GetName()</title>
+  </head>
+  <body>
+      <form class="form-group" action="/review/success" method="post">
+        <label for="review-content">Enter review here:</label>
+        <input type="text" name="review-content" required>
+        <input type="text" name="restaurant-id" value="@Model.GetId()" hidden>
+        </select>
+        <button type="submit" name="button">Submit</button>
+      </form>
+  </body>
+</html>

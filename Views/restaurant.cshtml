@@ -2,16 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>@Model.GetName()</title>
+    <title>@Model["restaurant"].GetName()</title>
   </head>
   <body>
-    <h2>Here is the restaurant @Model.GetName()</h2>
+    <h2>Here is the restaurant @Model["restaurant"].GetName()</h2>
 
-  <form class="form-group" action="/restaurant/deleted/@Model.GetId()" method="post">
+    <p><a href='/review/new/@Model["restaurant"].GetId()'>Write a review for @Model["restaurant"].GetName()</a></p>
+
+    <h4>Here are the reviews for @Model["restaurant"].GetName()<h4>
+      @foreach(var review in Model["reviews"])
+      {
+        <br>
+        <p>@review.GetContent()</p>
+        <br>
+      }
+
+  <form class="form-group" action='/restaurant/deleted/@Model["restaurant"].GetId()' method="post">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Delete Restaurant</button>
   </form>
-  <a href="/restaurant/edit/@Model.GetId()">Edit this restaurant</a>
+  <a href='/restaurant/edit/@Model["restaurant"].GetId()'>Edit this restaurant</a>
   <a href="/">Return Home</a>
   </body>
 </html>

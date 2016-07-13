@@ -54,8 +54,12 @@ namespace BestRestaurant
       };
 
       Get["/restaurant/{id}"] = parameters => {
-        Restaurant selectedRestaurant = Restaurant.Find(parameters.id);
-        return View["restaurant.cshtml", selectedRestaurant];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var selectedRestaurant = Restaurant.Find(parameters.id);
+        var selectedReviews = selectedRestaurant.GetReviews();
+        model.Add("restaurant", selectedRestaurant);
+        model.Add("reviews", selectedReviews);
+        return View["restaurant.cshtml", model];
       };
 
       Get["/restaurant/edit/{id}"] = parameters => {
@@ -87,12 +91,31 @@ namespace BestRestaurant
       };
 
       Patch["/restaurant/success/{id}"]=parameters=>{
-        Restaurant selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
+        var selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
         selectedRestaurant.SetName(Request.Form["restaurant-name"]);
         selectedRestaurant.SetCuisineId(Request.Form["cuisine-id"]);
-        return View["restaurant.cshtml", selectedRestaurant];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var selectedReviews = selectedRestaurant.GetReviews();
+        model.Add("restaurant", selectedRestaurant);
+        model.Add("reviews", selectedReviews);
+        return View["restaurant.cshtml", model];
       };
 
+      Get["/review/new/{id}"]= parameters =>{
+        Restaurant restaurantToBeReviewed = Restaurant.Find(parameters.id);
+        return View["review_new.cshtml", restaurantToBeReviewed];
+      };
+
+      Post["/review/success"]=_=>{
+        Review newReview = new Review(Request.Form["review-content"], Request.Form["restaurant-id"]);
+        newReview.Save();
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
+        var selectedReviews = selectedRestaurant.GetReviews();
+        model.Add("restaurant", selectedRestaurant);
+        model.Add("reviews", selectedReviews);
+        return View["restaurant.cshtml", model];
+      };
     }
   }
 }

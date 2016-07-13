@@ -14,7 +14,7 @@
           @foreach (var cuisine in Model["cuisines"])
           {
 
-            if (@model["restaurant"].GetCuisineId() == cuisine.GetId())
+            if (@Model["restaurant"].GetCuisineId() == cuisine.GetId())
             {
               <option selected="selected" value="@cuisine.GetId()">@cuisine.GetName()</option>
             }
