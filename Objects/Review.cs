@@ -10,12 +10,14 @@ namespace BestRestaurant.Object
     private string _content;
     private int _restaurantId;
     private int _userId;
+    private int _rating;
 
-    public Review(string content, int restaurantId, int userId, int id = 0)
+    public Review(string content, int restaurantId, int userId, int rating = 3 , int id = 0)
     {
       _content = content;
       _restaurantId = restaurantId;
       _userId = userId;
+      _rating = rating;
       _id = id;
     }
 
@@ -34,6 +36,10 @@ namespace BestRestaurant.Object
     public int GetUserId()
     {
         return _userId;
+    }
+    public int GetRating()
+    {
+        return _rating;
     }
 
     public void SetContent(string newContent)
@@ -137,7 +143,8 @@ namespace BestRestaurant.Object
         bool contentEquality = this.GetContent() == newReview.GetContent();
         bool restaurantEquality = this.GetRestaurantId() == newReview.GetRestaurantId();
         bool userEquality = this.GetUserId() == newReview.GetUserId();
-        return(contentEquality && restaurantEquality && userEquality);
+        bool ratingEquality = this.GetRating() == newReview.GetRating();
+        return(contentEquality && restaurantEquality && userEquality && ratingEquality);
       }
     }
 
@@ -157,7 +164,8 @@ namespace BestRestaurant.Object
         string reviewContent = rdr.GetString(1);
         int reviewRestaurantId = rdr.GetInt32(2);
         int reviewUserId = rdr.GetInt32(3);
-        Review newReview = new Review(reviewContent, reviewRestaurantId, reviewUserId, reviewId);
+        int reviewRating = rdr.GetInt32(4);
+        Review newReview = new Review(reviewContent, reviewRestaurantId, reviewUserId, reviewRating, reviewId);
         allReviews.Add(newReview);
       }
       if (rdr != null)
@@ -176,7 +184,7 @@ namespace BestRestaurant.Object
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO reviews (content, restaurant_id, user_id) OUTPUT INSERTED.id VALUES (@reviewContent, @reviewRestaurantId, @reviewUserId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO reviews (content, restaurant_id, user_id, rating) OUTPUT INSERTED.id VALUES (@reviewContent, @reviewRestaurantId, @reviewUserId, @rating);", conn);
 
       SqlParameter contentParameter = new SqlParameter();
       contentParameter.ParameterName = "@reviewContent";
@@ -190,9 +198,14 @@ namespace BestRestaurant.Object
       userIdParameter.ParameterName = "@reviewUserId";
       userIdParameter.Value = this.GetUserId();
 
+      SqlParameter ratingParameter = new SqlParameter();
+      ratingParameter.ParameterName = "@rating";
+      ratingParameter.Value = this.GetRating();
+
       cmd.Parameters.Add(contentParameter);
       cmd.Parameters.Add(restaurantIdParameter);
       cmd.Parameters.Add(userIdParameter);
+      cmd.Parameters.Add(ratingParameter);
 
       rdr = cmd.ExecuteReader();
 
@@ -208,6 +221,7 @@ namespace BestRestaurant.Object
       {
         conn.Close();
       }
+
     }
     public static Review Find(int reviewId)
     {
@@ -227,6 +241,7 @@ namespace BestRestaurant.Object
       string reviewContent = null;
       int reviewRestaurantId = 0;
       int reviewUserId = 0;
+      int reviewRating = 0;
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -235,8 +250,9 @@ namespace BestRestaurant.Object
         reviewContent = rdr.GetString(1);
         reviewRestaurantId = rdr.GetInt32(2);
         reviewUserId = rdr.GetInt32(3);
+        reviewRating = rdr.GetInt32(4);
       }
-      Review newReview = new Review(reviewContent, reviewRestaurantId, reviewUserId, foundReviewId);
+      Review newReview = new Review(reviewContent, reviewRestaurantId, reviewUserId, reviewRating, foundReviewId);
       if (rdr != null)
       {
         rdr.Close();

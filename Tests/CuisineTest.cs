@@ -118,10 +118,10 @@ namespace BestRestaurant.Object
 
       //Act
       secondCuisine.Delete();
-
       List<Cuisine> resultingCuisine = Cuisine.GetAll();
       List<Restaurant> resultingRestaurant = Restaurant.GetAll();
       List<Review> resultingReview = Review.GetAll();
+
       //Assert
       Assert.Equal(expectedCuisine, resultingCuisine);
       Assert.Equal(expectedRestaurant, resultingRestaurant);

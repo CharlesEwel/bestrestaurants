@@ -17,16 +17,16 @@ namespace BestRestaurant.Object
 
     public int GetId()
     {
-        return _id;
+      return _id;
     }
     public string GetName()
     {
-        return _name;
+      return _name;
     }
 
     public void SetName(string newName)
     {
-        _name = newName;
+      _name = newName;
     }
 
     public override bool Equals(System.Object otherCuisine)
@@ -93,7 +93,8 @@ namespace BestRestaurant.Object
         int restaurantId = rdr.GetInt32(0);
         string restaurantName = rdr.GetString(1);
         int restaurantCuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        int averageRating = rdr.GetInt32(3);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId, averageRating);
         allRestaurantsMatchingCuisine.Add(newRestaurant);
       }
       if (rdr != null)

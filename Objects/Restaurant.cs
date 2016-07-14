@@ -9,12 +9,14 @@ namespace BestRestaurant.Object
     private int _id;
     private string _name;
     private int _cuisineId;
+    private int _averageRating;
 
-    public Restaurant(string name, int cuisineId, int id = 0)
+    public Restaurant(string name, int cuisineId, int id = 0, int averageRating = -1)
     {
       _name = name;
       _cuisineId = cuisineId;
       _id = id;
+      _averageRating = averageRating;
     }
 
     public int GetId()
@@ -30,66 +32,102 @@ namespace BestRestaurant.Object
         return _cuisineId;
     }
 
+    public int GetAverageRating()
+    {
+      return _averageRating;
+    }
+
     public void SetName(string newName)
     {
-        _name = newName;
-        SqlConnection conn = DB.Connection();
-        SqlDataReader rdr = null;
-        conn.Open();
+      _name = newName;
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
 
-        SqlCommand cmd = new SqlCommand("UPDATE restaurants SET name = @restaurantName where id = @id;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE restaurants SET name = @restaurantName where id = @id;", conn);
 
-        SqlParameter nameParameter = new SqlParameter();
-        nameParameter.ParameterName = "@restaurantName";
-        nameParameter.Value = newName;
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@restaurantName";
+      nameParameter.Value = newName;
 
-        SqlParameter idParameter = new SqlParameter();
-        idParameter.ParameterName = "@id";
-        idParameter.Value = this.GetId();
+      SqlParameter idParameter = new SqlParameter();
+      idParameter.ParameterName = "@id";
+      idParameter.Value = this.GetId();
 
-        cmd.Parameters.Add(nameParameter);
-        cmd.Parameters.Add(idParameter);
-        rdr = cmd.ExecuteReader();
+      cmd.Parameters.Add(nameParameter);
+      cmd.Parameters.Add(idParameter);
+      rdr = cmd.ExecuteReader();
 
-        if (rdr != null)
-        {
-          rdr.Close();
-        }
-        if (conn != null)
-        {
-          conn.Close();
-        }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
 
     }
     public void SetCuisineId(int newCuisineId)
     {
-        _cuisineId = newCuisineId;
-        SqlConnection conn = DB.Connection();
-        SqlDataReader rdr = null;
-        conn.Open();
+      _cuisineId = newCuisineId;
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
 
-        SqlCommand cmd = new SqlCommand("UPDATE restaurants SET cuisine_id = @cuisineId where id = @id;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE restaurants SET cuisine_id = @cuisineId where id = @id;", conn);
 
-        SqlParameter cuisineIdParameter = new SqlParameter();
-        cuisineIdParameter.ParameterName = "@cuisineId";
-        cuisineIdParameter.Value = newCuisineId.ToString();
+      SqlParameter cuisineIdParameter = new SqlParameter();
+      cuisineIdParameter.ParameterName = "@cuisineId";
+      cuisineIdParameter.Value = newCuisineId.ToString();
 
-        SqlParameter idParameter = new SqlParameter();
-        idParameter.ParameterName = "@id";
-        idParameter.Value = this.GetId();
+      SqlParameter idParameter = new SqlParameter();
+      idParameter.ParameterName = "@id";
+      idParameter.Value = this.GetId();
 
-        cmd.Parameters.Add(cuisineIdParameter);
-        cmd.Parameters.Add(idParameter);
-        rdr = cmd.ExecuteReader();
+      cmd.Parameters.Add(cuisineIdParameter);
+      cmd.Parameters.Add(idParameter);
+      rdr = cmd.ExecuteReader();
 
-        if (rdr != null)
-        {
-          rdr.Close();
-        }
-        if (conn != null)
-        {
-          conn.Close();
-        }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public void SetAverageRating(int newAverageRating)
+    {
+      _averageRating = newAverageRating;
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE restaurants SET average_rating = @averageRating where id = @id;", conn);
+
+      SqlParameter averageRatingParameter = new SqlParameter();
+      averageRatingParameter.ParameterName = "@averageRating";
+      averageRatingParameter.Value = newAverageRating.ToString();
+
+      SqlParameter idParameter = new SqlParameter();
+      idParameter.ParameterName = "@id";
+      idParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(averageRatingParameter);
+      cmd.Parameters.Add(idParameter);
+      rdr = cmd.ExecuteReader();
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
 
     public override bool Equals(System.Object otherRestaurant)
@@ -160,7 +198,8 @@ namespace BestRestaurant.Object
         string reviewName = rdr.GetString(1);
         int reviewRestaurantId = rdr.GetInt32(2);
         int reviewUserId = rdr.GetInt32(3);
-        Review newReview = new Review(reviewName, reviewRestaurantId, reviewUserId, reviewId);
+        int reviewRating = rdr.GetInt32(4);
+        Review newReview = new Review(reviewName, reviewRestaurantId, reviewUserId, reviewRating, reviewId);
         allReviewsMatchingRestaurant.Add(newReview);
       }
       if (rdr != null)
@@ -180,7 +219,7 @@ namespace BestRestaurant.Object
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO restaurants (name, cuisine_id) OUTPUT INSERTED.id VALUES (@restaurantName, @restaurantCuisineId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO restaurants (name, cuisine_id, average_rating) OUTPUT INSERTED.id VALUES (@restaurantName, @restaurantCuisineId, @averageRating);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@restaurantName";
@@ -190,8 +229,13 @@ namespace BestRestaurant.Object
       cuisineIdParameter.ParameterName = "@restaurantCuisineId";
       cuisineIdParameter.Value = this.GetCuisineId();
 
+      SqlParameter averageRatingParameter = new SqlParameter();
+      averageRatingParameter.ParameterName = "@averageRating";
+      averageRatingParameter.Value = this.GetCuisineId();
+
       cmd.Parameters.Add(nameParameter);
       cmd.Parameters.Add(cuisineIdParameter);
+      cmd.Parameters.Add(averageRatingParameter);
 
       rdr = cmd.ExecuteReader();
 
