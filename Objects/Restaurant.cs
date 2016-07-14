@@ -9,9 +9,9 @@ namespace BestRestaurant.Object
     private int _id;
     private string _name;
     private int _cuisineId;
-    private int _averageRating;
+    private double _averageRating;
 
-    public Restaurant(string name, int cuisineId, int id = 0, int averageRating = -1)
+    public Restaurant(string name, int cuisineId, int id = 0, double averageRating = -1)
     {
       _name = name;
       _cuisineId = cuisineId;
@@ -32,7 +32,7 @@ namespace BestRestaurant.Object
         return _cuisineId;
     }
 
-    public int GetAverageRating()
+    public double GetAverageRating()
     {
       return _averageRating;
     }
@@ -99,7 +99,7 @@ namespace BestRestaurant.Object
       }
     }
 
-    public void SetAverageRating(int newAverageRating)
+    public void SetAverageRating(double newAverageRating)
     {
       _averageRating = newAverageRating;
       SqlConnection conn = DB.Connection();
@@ -158,7 +158,8 @@ namespace BestRestaurant.Object
         string restaurantName = rdr.GetString(1);
 
         int restaurantCuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        double restaurantAverageRating = rdr.GetDouble(3);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId, restaurantAverageRating);
         allRestaurants.Add(newRestaurant);
       }
       if (rdr != null)
@@ -213,6 +214,24 @@ namespace BestRestaurant.Object
       return allReviewsMatchingRestaurant;
     }
 
+    public double CalculateAverageRating()
+    {
+      List<Review> reviews= this.GetReviews();
+      int total=0;
+      foreach(Review individualReview in reviews)
+      {
+        total+=individualReview.GetRating();
+      }
+      if(total<0)
+      {
+        return -1;
+      }
+      else
+      {
+        return (double) total/reviews.Count;
+      }
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();
@@ -231,7 +250,7 @@ namespace BestRestaurant.Object
 
       SqlParameter averageRatingParameter = new SqlParameter();
       averageRatingParameter.ParameterName = "@averageRating";
-      averageRatingParameter.Value = this.GetCuisineId();
+      averageRatingParameter.Value = this.GetAverageRating();
 
       cmd.Parameters.Add(nameParameter);
       cmd.Parameters.Add(cuisineIdParameter);
@@ -269,6 +288,7 @@ namespace BestRestaurant.Object
       int foundRestaurantId = 0;
       string restaurantName = null;
       int restaurantCuisineId = 0;
+      double foundRestaurantAverageRating = 0;
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -276,8 +296,9 @@ namespace BestRestaurant.Object
         foundRestaurantId = rdr.GetInt32(0);
         restaurantName = rdr.GetString(1);
         restaurantCuisineId = rdr.GetInt32(2);
+        foundRestaurantAverageRating = rdr.GetDouble(3);
       }
-      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, foundRestaurantId);
+      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, foundRestaurantId, foundRestaurantAverageRating);
       if (rdr != null)
       {
         rdr.Close();

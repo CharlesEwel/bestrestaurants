@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Content/css/styles.css">
     <meta charset="utf-8">
     <title>Add a New Cuisine</title>
   </head>
   <body>
-    <form class="form-group" action="/cuisine/success" method="post">
-      <label for="cuisine-name">Enter Cuisine Name:</label>
-      <input type="text" name="cuisine-name" required>
-      <button type="submit" name="button">Submit</button>
-    </form>
+    <div class="container centered-container">
+      <form class="form-group" action="/cuisine/success" method="post">
+        <label for="cuisine-name">Enter Cuisine Name:</label>
+        <input type="text" name="cuisine-name" required>
+        <button class="btn btn-success" type="submit" name="button">Submit</button>
+      </form>
+    </div>
   </body>
 </html>

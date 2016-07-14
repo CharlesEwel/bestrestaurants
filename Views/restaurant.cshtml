@@ -1,28 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="Content/css/styles.css">
     <meta charset="utf-8">
     <title>@Model["restaurant"].GetName()</title>
   </head>
   <body>
-    <h2>Here is the restaurant @Model["restaurant"].GetName()</h2>
+    <div class="container centered-container">
+      <h2>Here is the restaurant @Model["restaurant"].GetName()</h2>
 
-    <p><a href='/review/new/@Model["restaurant"].GetId()'>Write a review for @Model["restaurant"].GetName()</a></p>
+      <p><a href='/review/new/@Model["restaurant"].GetId()'>Write a review for @Model["restaurant"].GetName()</a></p>
 
-    <h4>Here are the reviews for @Model["restaurant"].GetName()<h4>
-      @foreach(var review in Model["reviews"])
-      {
-        <br>
-        <h4>@Model["users"][@review.GetUserId()] says:</h4>
-        <p>@review.GetContent()</p>
-        <br>
-      }
+      <h4>Here are the reviews for @Model["restaurant"].GetName()<h4>
 
-  <form class="form-group" action='/restaurant/deleted/@Model["restaurant"].GetId()' method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit">Delete Restaurant</button>
-  </form>
-  <a href='/restaurant/edit/@Model["restaurant"].GetId()'>Edit this restaurant</a>
-  <a href="/">Return Home</a>
+        @if(@Model["restaurant"].GetAverageRating()==-1)
+        {
+          <p>Nobody has rated this restaurant yet</p>
+        }
+        else
+        {
+          <p>Average Rating: @Model["restaurant"].GetAverageRating() stars</p>
+        }
+
+        @foreach(var review in Model["reviews"])
+        {
+          <br>
+          <h4>@Model["users"][@review.GetUserId()] says:</h4>
+          <p>@review.GetContent()</p>
+          <p>
+            Score @review.GetRating()
+          </p>
+          <br>
+        }
+
+        <form class="form-group" action='/restaurant/deleted/@Model["restaurant"].GetId()' method="post">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit">Delete Restaurant</button>
+        </form>
+        <a href='/restaurant/edit/@Model["restaurant"].GetId()'>Edit this restaurant</a>
+        <a href="/">Return Home</a>
+    </div>
   </body>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="/Content/css/styles.css">
 </html>

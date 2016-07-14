@@ -124,6 +124,25 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(expectedResult, result);
     }
+    [Fact]
+    public void Test_CalculateAverageRating_CorrectlySavesAveragesRatings()
+    {
+      //Arrange
+      Restaurant newRestaurant = new Restaurant("McDonalds", 1);
+      newRestaurant.Save();
+
+      Review firstReview = new Review("Yummy", newRestaurant.GetId(), 2, 4);
+      firstReview.Save();
+      Review secondReview = new Review("Ok", newRestaurant.GetId(), 1, 3);
+      secondReview.Save();
+
+      //Act
+      double result = newRestaurant.CalculateAverageRating();
+      newRestaurant.SetAverageRating(result);
+      double resultToCheck = newRestaurant.GetAverageRating();
+      //Assert
+      Assert.Equal(3.5, resultToCheck);
+    }
     public void Dispose()
     {
       Restaurant.DeleteAll();

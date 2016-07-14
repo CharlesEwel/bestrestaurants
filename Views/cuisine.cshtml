@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Content/css/styles.css">
     <meta charset="utf-8">
     <title>@Model["cuisine"].GetName()</title>
   </head>
   <body>
-    <h2>Here are the restaurants that are @Model["cuisine"].GetName()</h2>
-    <ul>
-    @foreach (var restaurant in Model["restaurants"])
-    {
-      <li><a href="/restaurant/@restaurant.GetId()">@restaurant.GetName()</a></li>
-    }
-  </ul>
-  <form class="form-group" action='/cuisine/deleted/@Model["cuisine"].GetId()' method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit">Delete Cuisine</button>
-  </form>
-  <a href="/restaurant/new">Add a restaurant</a>
-  <a href="/">Return Home</a>
+    <div class="container centered-container">
+      <h2>Here are the restaurants that are @Model["cuisine"].GetName()</h2>
+      <ul>
+        @foreach (var restaurant in Model["restaurants"])
+        {
+          <li><a href="/restaurant/@restaurant.GetId()">@restaurant.GetName()</a>  @restaurant.GetAverageRating() Stars</li>
+        }
+      </ul>
+      <form class="form-group" action='/cuisine/deleted/@Model["cuisine"].GetId()' method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete Cuisine</button>
+      </form>
+      <a href="/restaurant/new">Add a restaurant</a>
+      <a href="/">Return Home</a>
+    </div>
   </body>
 </html>

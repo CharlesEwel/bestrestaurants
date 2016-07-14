@@ -24,6 +24,12 @@ namespace BestRestaurant
       Delete["/"]=_=>{
         Cuisine.DeleteAll();
         Restaurant.DeleteAll();
+        Review.DeleteAll();
+        User.DeleteAll();
+        User admin = new User("Admin", 1);
+        admin.Save();
+        User guest = new User("Guest", 1);
+        guest.Save();
         return View["index.cshtml"];
       };
 
@@ -134,10 +140,13 @@ namespace BestRestaurant
       };
 
       Post["/review/success"]=_=>{
-        Review newReview = new Review(Request.Form["review-content"], Request.Form["restaurant-id"], Request.Form["user-id"]);
+        Review newReview = new Review(Request.Form["review-content"], Request.Form["restaurant-id"], Request.Form["user-id"], Request.Form["rating"]);
         newReview.Save();
         Dictionary<string, object> model = new Dictionary<string, object>();
         var selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
+        double newRating = selectedRestaurant.CalculateAverageRating();
+        selectedRestaurant.SetAverageRating(newRating);
+        selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
         var selectedReviews = selectedRestaurant.GetReviews();
         var allUsers = User.GetAll();
         Dictionary<int, string> usernames = new Dictionary<int, string>{};

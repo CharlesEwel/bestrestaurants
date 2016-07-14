@@ -93,7 +93,7 @@ namespace BestRestaurant.Object
         int restaurantId = rdr.GetInt32(0);
         string restaurantName = rdr.GetString(1);
         int restaurantCuisineId = rdr.GetInt32(2);
-        int averageRating = rdr.GetInt32(3);
+        double averageRating = rdr.GetDouble(3);
         Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId, averageRating);
         allRestaurantsMatchingCuisine.Add(newRestaurant);
       }

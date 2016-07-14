@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Content/css/styles.css">
     <meta charset="utf-8">
     <title>Add a New Review for @Model["restaurant"].GetName()</title>
   </head>
   <body>
+    <div class="container centered-container">
       <form class="form-group" action="/review/success" method="post">
         <label for="review-content">Enter review here:</label>
         <input type="text" name="review-content" required>
         <input type="text" name="restaurant-id" value='@Model["restaurant"].GetId()' hidden>
+        <select name="rating">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
         <select name="user-id">
           @foreach (var user in Model["users"])
           {
             <option value="@user.GetId()">@user.GetName()</option>
           }
         </select>
-        <button type="submit" name="button">Submit</button>
+        <button class="btn btn-success" type="submit" name="button">Submit</button>
       </form>
+    </div>
   </body>
 </html>

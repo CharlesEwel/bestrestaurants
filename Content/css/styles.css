@@ -1,0 +1,16 @@
+body {
+  color: white;
+  background-color: #505050;
+}
+
+.centered-container {
+  text-align: center;
+}
+
+a:hover {
+  color:red;
+}
+
+ul {
+    list-style-position: inside;
+}

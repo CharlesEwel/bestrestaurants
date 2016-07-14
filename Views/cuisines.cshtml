@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Content/css/styles.css">
     <meta charset="utf-8">
     <title>Cuisines</title>
   </head>
   <body>
-    @if(@Model.Count==0)
-    {
-      <p>
-        No cuisines have been added yet.
-      </p>
-    }
-    else
-    {
-      <ul>
-      @foreach(var cuisine in Model)
+    <div class="container centered-container">
+      @if(@Model.Count==0)
       {
-        <li><a href="/cuisine/@cuisine.GetId()">@cuisine.GetName()</a></li>
+        <p>
+          No cuisines have been added yet.
+        </p>
       }
-      </ul>
-    }
-    <a href="/cuisine/new">Add a new cuisine</a>
-    <a href="/">Return Home</a>
+      else
+      {
+        <ul>
+          @foreach(var cuisine in Model)
+          {
+            <li><a href="/cuisine/@cuisine.GetId()">@cuisine.GetName()</a></li>
+          }
+        </ul>
+      }
+      <a href="/cuisine/new">Add a new cuisine</a>
+      <a href="/">Return Home</a>
+    </div>
   </body>
 </html>
