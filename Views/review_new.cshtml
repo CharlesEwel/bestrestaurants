@@ -2,13 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Add a New Review for @Model.GetName()</title>
+    <title>Add a New Review for @Model["restaurant"].GetName()</title>
   </head>
   <body>
       <form class="form-group" action="/review/success" method="post">
         <label for="review-content">Enter review here:</label>
         <input type="text" name="review-content" required>
-        <input type="text" name="restaurant-id" value="@Model.GetId()" hidden>
+        <input type="text" name="restaurant-id" value='@Model["restaurant"].GetId()' hidden>
+        <select name="user-id">
+          @foreach (var user in Model["users"])
+          {
+            <option value="@user.GetId()">@user.GetName()</option>
+          }
         </select>
         <button type="submit" name="button">Submit</button>
       </form>

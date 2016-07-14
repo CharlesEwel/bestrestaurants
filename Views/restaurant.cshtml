@@ -13,6 +13,7 @@
       @foreach(var review in Model["reviews"])
       {
         <br>
+        <h4>@Model["users"][@review.GetUserId()] says:</h4>
         <p>@review.GetContent()</p>
         <br>
       }
