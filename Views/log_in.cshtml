@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Log In</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Content/css/styles.css">
+  </head>
+  <body>
+    <div class="container centered-container">
+      <form class="form-group" action="/login/success" method="post">
+        <select name="user-id">
+          @foreach (var user in Model)
+          {
+            <option value="@user.GetId()">@user.GetName()</option>
+          }
+        </select>
+        <button class="btn btn-success" type="submit" name="button">Log In</button>
+      </form>
+    </div>
+  </body>
+</html>

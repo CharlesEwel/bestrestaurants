@@ -107,6 +107,20 @@ namespace BestRestaurant.Object
       //Assert
       Assert.Equal(firstUser.GetDisplayPreference(), resultUser.GetDisplayPreference());
     }
+    [Fact]
+    public void Test_SetCurrentUser_AdjustsDatabaseCorrectly()
+    {
+      // Arrange
+      User firstUser = new User("Bob", 1);
+      firstUser.Save();
+
+      //Act
+      firstUser.SetCurrentUser();
+      User resultUser = User.GetCurrentUser();
+
+      //Assert
+      Assert.Equal(firstUser, resultUser);
+    }
 
 
     public void Dispose()

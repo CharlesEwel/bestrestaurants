@@ -233,6 +233,74 @@ namespace BestRestaurant.Object
       }
       return newUser;
     }
+
+    public void SetCurrentUser()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE currentuser SET user_id = @userId WHERE id = 1;", conn);
+
+      SqlParameter userIdParameter = new SqlParameter();
+      userIdParameter.ParameterName = "@userId";
+      userIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(userIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static User GetCurrentUser()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT user_id FROM currentuser WHERE id = 1;", conn);
+
+      rdr = cmd.ExecuteReader();
+
+      int foundUserId = 1;
+
+      while(rdr.Read())
+      {
+        foundUserId = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      SqlCommand cmd2 = new SqlCommand("SELECT * FROM users WHERE id = @userId;", conn);
+
+      SqlParameter userIdParameter = new SqlParameter();
+      userIdParameter.ParameterName = "@userId";
+      userIdParameter.Value = foundUserId.ToString();
+
+      cmd2.Parameters.Add(userIdParameter);
+
+      string userName = null;
+      int userDisplayPreference = 0;
+      rdr = cmd2.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        userName = rdr.GetString(1);
+        userDisplayPreference = rdr.GetInt32(2);
+      }
+      User foundUser = new User(userName, userDisplayPreference, foundUserId);
+      return foundUser;
+
+    }
+
     public void Delete()
     {
       List<Review> reviewsToDelete = this.GetReviews();

@@ -17,9 +17,11 @@ namespace BestRestaurant
           admin.Save();
           User guest = new User("Guest", 1);
           guest.Save();
+          guest.SetCurrentUser();
         }
-      return View["index.cshtml"];
-    };
+        User currentUser = User.GetCurrentUser();
+        return View["index.cshtml", currentUser];
+      };
 
       Delete["/"]=_=>{
         Cuisine.DeleteAll();
@@ -30,7 +32,20 @@ namespace BestRestaurant
         admin.Save();
         User guest = new User("Guest", 1);
         guest.Save();
-        return View["index.cshtml"];
+        guest.SetCurrentUser();
+        User currentUser = User.GetCurrentUser();
+        return View["index.cshtml", currentUser];
+      };
+
+      Get["/login"]=_=>{
+        List<User> allUsers = User.GetAll();
+        return View["log_in.cshtml", allUsers];
+      };
+
+      Post["/login/success"]=_=>{
+        User currentUser = User.Find(Request.Form["user-id"]);
+        currentUser.SetCurrentUser();
+        return View["index.cshtml", currentUser];
       };
 
       Get["/cuisines"]=_=>{
@@ -172,7 +187,8 @@ namespace BestRestaurant
         {
           User newUser = new User(Request.Form["user-name"], Request.Form["display-preference"]);
           newUser.Save();
-          return View["index.cshtml"];
+          User currentUser = User.GetCurrentUser();
+          return View["index.cshtml", currentUser];
         }
       };
 

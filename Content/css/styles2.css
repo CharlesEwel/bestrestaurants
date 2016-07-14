@@ -1,0 +1,20 @@
+body {
+  color: white;
+  background-color: #dd3;
+}
+
+.centered-container {
+  text-align: center;
+}
+
+a:hover {
+  color:red;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+input, select {
+  color: black;
+}
