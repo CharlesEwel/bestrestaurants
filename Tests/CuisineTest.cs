@@ -107,9 +107,9 @@ namespace BestRestaurant.Object
       Restaurant secondRestaurant = new Restaurant("Chipotle", secondCuisine.GetId());
       secondRestaurant.Save();
 
-      Review firstReview = new Review("Test", firstRestaurant.GetId());
+      Review firstReview = new Review("Test", firstRestaurant.GetId(), 2);
       firstReview.Save();
-      Review secondReview = new Review("Test2", secondRestaurant.GetId());
+      Review secondReview = new Review("Test2", secondRestaurant.GetId(), 2);
       secondReview.Save();
 
       List<Cuisine> expectedCuisine = new List<Cuisine>{firstCuisine};

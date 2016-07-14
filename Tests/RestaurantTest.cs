@@ -113,10 +113,10 @@ namespace BestRestaurant.Object
       Restaurant newRestaurant = new Restaurant("Fast Food", 1);
       newRestaurant.Save();
 
-      Review firstReview = new Review("McDonalds", newRestaurant.GetId());
+      Review firstReview = new Review("McDonalds", newRestaurant.GetId(), 2);
 
       firstReview.Save();
-      Review secondReview = new Review("Dennys", 2);
+      Review secondReview = new Review("Dennys", 2, 2);
       secondReview.Save();
       List<Review> expectedResult = new List<Review> {firstReview};
       //Act

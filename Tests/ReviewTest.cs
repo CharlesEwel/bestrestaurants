@@ -28,7 +28,7 @@ namespace BestRestaurant.Object
     public void Test_Save_SavesSomethingToDatabase()
     {
       //Arrange
-      Review newReview = new Review("McDonalds", 1);
+      Review newReview = new Review("McDonalds", 1, 2);
 
       //Act
       newReview.Save();
@@ -41,8 +41,8 @@ namespace BestRestaurant.Object
     public void Test_Equals_ReturnsTrueIfContentAndRestaurantAreIdentical()
     {
       //Arrange
-      Review firstReview = new Review("McDonalds", 1);
-      Review secondReview = new Review("McDonalds", 1);
+      Review firstReview = new Review("McDonalds", 1, 2);
+      Review secondReview = new Review("McDonalds", 1, 2);
 
       //Assert
       Assert.Equal(firstReview, secondReview);
@@ -51,7 +51,7 @@ namespace BestRestaurant.Object
     public void Test_Save_SavesCorrectObjectToDatabase()
     {
       //Arrange
-      Review newReview = new Review("McDonalds", 1);
+      Review newReview = new Review("McDonalds", 1, 2);
 
       //Act
       newReview.Save();
@@ -64,7 +64,7 @@ namespace BestRestaurant.Object
     public void Test_Find_ReturnsASpecificReviewObject()
     {
       //Arrange
-      Review newReview = new Review("McDonalds", 1);
+      Review newReview = new Review("McDonalds", 1, 2);
       newReview.Save();
 
       //Act
@@ -77,9 +77,9 @@ namespace BestRestaurant.Object
     public void Test_DeleteOne_DeletesASpecificReviewObject()
     {
       //Arrange
-      Review firstReview = new Review("McDonalds", 1);
+      Review firstReview = new Review("McDonalds", 1, 2);
       firstReview.Save();
-      Review secondReview = new Review("Dennys", 2);
+      Review secondReview = new Review("Dennys", 2, 2);
       secondReview.Save();
 
       //Act
@@ -94,7 +94,7 @@ namespace BestRestaurant.Object
     public void Test_SetContentAndId_AdjustsDatabaseCorrectly()
     {
       // Arrange
-      Review firstReview = new Review("McDonalds", 1);
+      Review firstReview = new Review("McDonalds", 1, 2);
       firstReview.Save();
 
       //Act

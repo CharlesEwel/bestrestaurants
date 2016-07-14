@@ -159,7 +159,8 @@ namespace BestRestaurant.Object
         int reviewId = rdr.GetInt32(0);
         string reviewName = rdr.GetString(1);
         int reviewRestaurantId = rdr.GetInt32(2);
-        Review newReview = new Review(reviewName, reviewRestaurantId, reviewId);
+        int reviewUserId = rdr.GetInt32(3);
+        Review newReview = new Review(reviewName, reviewRestaurantId, reviewUserId, reviewId);
         allReviewsMatchingRestaurant.Add(newReview);
       }
       if (rdr != null)
