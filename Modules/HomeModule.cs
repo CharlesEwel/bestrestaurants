@@ -163,9 +163,17 @@ namespace BestRestaurant
       Get["/user/new"]=_=>View["user_new.cshtml"];
 
       Post["/user/success"]=_=>{
-        User newUser = new User(Request.Form["user-name"], Request.Form["display-preference"]);
-        newUser.Save();
-        return View["index.cshtml"];
+        bool isNameTaken = User.IsUserNameTaken(Request.Form["user-name"]);
+        if(isNameTaken)
+        {
+          return View["user_taken.cshtml"];
+        }
+        else
+        {
+          User newUser = new User(Request.Form["user-name"], Request.Form["display-preference"]);
+          newUser.Save();
+          return View["index.cshtml"];
+        }
       };
 
     }

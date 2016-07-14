@@ -14,3 +14,7 @@ a:hover {
 ul {
     list-style-position: inside;
 }
+
+input, select {
+  color: black;
+}

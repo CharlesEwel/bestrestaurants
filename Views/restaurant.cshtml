@@ -36,7 +36,7 @@
 
         <form class="form-group" action='/restaurant/deleted/@Model["restaurant"].GetId()' method="post">
           <input type="hidden" name="_method" value="DELETE">
-          <button type="submit">Delete Restaurant</button>
+          <button class="btn btn-danger" type="submit">Delete Restaurant</button>
         </form>
         <a href='/restaurant/edit/@Model["restaurant"].GetId()'>Edit this restaurant</a>
         <a href="/">Return Home</a>

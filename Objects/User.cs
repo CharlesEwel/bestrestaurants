@@ -147,6 +147,20 @@ namespace BestRestaurant.Object
       return allReviewsMatchingUser;
     }
 
+    public static bool IsUserNameTaken(string username)
+    {
+      List<User> takenUsernames = User.GetAll();
+      bool IsTaken = false;
+      foreach(User takenUsername in takenUsernames)
+      {
+        if(takenUsername.GetName() == username)
+        {
+          IsTaken = true;
+        }
+      }
+      return IsTaken;
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();
