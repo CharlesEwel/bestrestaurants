@@ -3,6 +3,18 @@
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="/Content/css/styles.css">
+    @if(Model["currentUser"].GetDisplayPreference() == 1)
+    {
+      <link rel="stylesheet" href="/Content/css/styles1.css">
+    }
+    else if (Model["currentUser"].GetDisplayPreference() == 2)
+    {
+      <link rel="stylesheet" href="/Content/css/styles2.css">
+    }
+    else
+    {
+      <link rel="stylesheet" href="/Content/css/styles3.css">
+    }
     <meta charset="utf-8">
     <title>Add a New Review for @Model["restaurant"].GetName()</title>
   </head>
@@ -19,12 +31,7 @@
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
-        <select name="user-id">
-          @foreach (var user in Model["users"])
-          {
-            <option value="@user.GetId()">@user.GetName()</option>
-          }
-        </select>
+        <input type="text" name="user-id" value='@Model["currentUser"].GetId()' hidden>
         <button class="btn btn-success" type="submit" name="button">Submit</button>
       </form>
     </div>

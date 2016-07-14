@@ -4,7 +4,19 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="/Content/css/styles.css">
-    <title>Add a New Restaurant</title>
+    @if(Model["currentUser"].GetDisplayPreference() == 1)
+    {
+      <link rel="stylesheet" href="/Content/css/styles1.css">
+    }
+    else if (Model["currentUser"].GetDisplayPreference() == 2)
+    {
+      <link rel="stylesheet" href="/Content/css/styles2.css">
+    }
+    else
+    {
+      <link rel="stylesheet" href="/Content/css/styles3.css">
+    }
+    <title>Edit Restaurant</title>
   </head>
   <body>
     <div class="container centered-container">

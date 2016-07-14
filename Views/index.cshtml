@@ -2,7 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-          <link rel="stylesheet" href="/Content/css/styles.css">
+    <link rel="stylesheet" href="/Content/css/styles.css">
     @if(Model.GetDisplayPreference() == 1)
     {
       <link rel="stylesheet" href="/Content/css/styles1.css">
@@ -26,10 +26,13 @@
       <p><a href="/user/new">Add a new user.</a></p>
       <a href="/login">Log In</a>
       <br>
-      <form class="form-group" action="/" method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <button class="btn btn-danger" type="submit">Delete Everything</button>
-      </form>
+      @if(Model.GetName()=="Admin")
+      {
+        <form class="form-group" action="/" method="post">
+          <input type="hidden" name="_method" value="DELETE">
+          <button class="btn btn-danger" type="submit">Delete Everything</button>
+        </form>
+      }
     </div>
   </body>
 </html>

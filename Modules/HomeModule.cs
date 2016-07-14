@@ -39,7 +39,11 @@ namespace BestRestaurant
 
       Get["/login"]=_=>{
         List<User> allUsers = User.GetAll();
-        return View["log_in.cshtml", allUsers];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allUsers", allUsers);
+        return View["log_in.cshtml", model];
       };
 
       Post["/login/success"]=_=>{
@@ -50,13 +54,19 @@ namespace BestRestaurant
 
       Get["/cuisines"]=_=>{
         List<Cuisine> allCuisines = Cuisine.GetAll();
-        return View["cuisines.cshtml", allCuisines];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allCuisines", allCuisines);
+        return View["cuisines.cshtml", model];
       };
 
       Get["/cuisine/{id}"] = parameters => {
         Dictionary<string, object> model = new Dictionary<string, object>();
         var selectedCuisine = Cuisine.Find(parameters.id);
         var cuisineRestaurants = selectedCuisine.GetRestaurants();
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         model.Add("cuisine", selectedCuisine);
         model.Add("restaurants", cuisineRestaurants);
         return View ["cuisine.cshtml", model];
@@ -66,21 +76,36 @@ namespace BestRestaurant
         Cuisine selectedCuisine = Cuisine.Find(parameters.id);
         selectedCuisine.Delete();
         List<Cuisine> allCuisines = Cuisine.GetAll();
-        return View["cuisines.cshtml", allCuisines];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allCuisines", allCuisines);
+        return View["cuisines.cshtml", model];
       };
 
-      Get["/cuisine/new"]=_=>View["cuisine_new.cshtml"];
+      Get["/cuisine/new"]=_=>{
+        User currentUser = User.GetCurrentUser();
+        return View["cuisine_new.cshtml", currentUser];
+      };
 
       Post["/cuisine/success"]=_=>{
         Cuisine newCuisine = new Cuisine(Request.Form["cuisine-name"]);
         newCuisine.Save();
         List<Cuisine> allCuisines = Cuisine.GetAll();
-        return View["cuisines.cshtml", allCuisines];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allCuisines", allCuisines);
+        return View["cuisines.cshtml", model];
       };
 
       Get["/restaurants"]=_=>{
         List<Restaurant> allRestaurants = Restaurant.GetAll();
-        return View["restaurants.cshtml", allRestaurants];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allRestaurants", allRestaurants);
+        return View["restaurants.cshtml", model];
       };
 
       Get["/restaurant/{id}"] = parameters => {
@@ -93,6 +118,8 @@ namespace BestRestaurant
         {
           usernames.Add(reviewer.GetId(), reviewer.GetName());
         }
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         model.Add("users", usernames);
         model.Add("restaurant", selectedRestaurant);
         model.Add("reviews", selectedReviews);
@@ -103,6 +130,8 @@ namespace BestRestaurant
         Dictionary<string, object> model = new Dictionary<string, object>();
         var selectedRestaurant = Restaurant.Find(parameters.id);
         var allCuisines = Cuisine.GetAll();
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         model.Add("restaurant", selectedRestaurant);
         model.Add("cuisines", allCuisines);
         return View["restaurant_edit.cshtml", model];
@@ -112,19 +141,31 @@ namespace BestRestaurant
         Restaurant selectedRestaurant = Restaurant.Find(parameters.id);
         selectedRestaurant.Delete();
         List<Restaurant> allRestaurants = Restaurant.GetAll();
-        return View["restaurants.cshtml", allRestaurants];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allRestaurants", allRestaurants);
+        return View["restaurants.cshtml", model];
       };
 
       Get["/restaurant/new"]=_=>{
         List<Cuisine> allCuisines = Cuisine.GetAll();
-        return View["restaurant_new.cshtml", allCuisines];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allCuisines", allCuisines);
+        return View["restaurant_new.cshtml", model];
       };
 
       Post["/restaurant/success"]=_=>{
         Restaurant newRestaurant = new Restaurant(Request.Form["restaurant-name"], Request.Form["cuisine-id"]);
         newRestaurant.Save();
         List<Restaurant> allRestaurants = Restaurant.GetAll();
-        return View["restaurants.cshtml", allRestaurants];
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        User currentUser = User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
+        model.Add("allRestaurants", allRestaurants);
+        return View["restaurants.cshtml", model];
       };
 
       Patch["/restaurant/success/{id}"]=parameters=>{
@@ -132,6 +173,8 @@ namespace BestRestaurant
         selectedRestaurant.SetName(Request.Form["restaurant-name"]);
         selectedRestaurant.SetCuisineId(Request.Form["cuisine-id"]);
         Dictionary<string, object> model = new Dictionary<string, object>();
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         var selectedReviews = selectedRestaurant.GetReviews();
         var allUsers = User.GetAll();
         Dictionary<int, string> usernames = new Dictionary<int, string>{};
@@ -149,6 +192,8 @@ namespace BestRestaurant
         Dictionary<string, object> model = new Dictionary<string, object>();
         var allUsers = User.GetAll();
         var restaurantToBeReviewed = Restaurant.Find(parameters.id);
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         model.Add("users", allUsers);
         model.Add("restaurant", restaurantToBeReviewed);
         return View["review_new.cshtml", model];
@@ -163,6 +208,8 @@ namespace BestRestaurant
         selectedRestaurant.SetAverageRating(newRating);
         selectedRestaurant = Restaurant.Find(Request.Form["restaurant-id"]);
         var selectedReviews = selectedRestaurant.GetReviews();
+        var currentUser= User.GetCurrentUser();
+        model.Add("currentUser", currentUser);
         var allUsers = User.GetAll();
         Dictionary<int, string> usernames = new Dictionary<int, string>{};
         foreach(User reviewer in allUsers)
@@ -175,20 +222,25 @@ namespace BestRestaurant
         return View["restaurant.cshtml", model];
       };
 
-      Get["/user/new"]=_=>View["user_new.cshtml"];
+      Get["/user/new"]=_=>{
+        User currentUser = User.GetCurrentUser();
+        return View["user_new.cshtml", currentUser];
+      };
 
       Post["/user/success"]=_=>{
         bool isNameTaken = User.IsUserNameTaken(Request.Form["user-name"]);
+        User currentUser = User.GetCurrentUser();
         if(isNameTaken)
         {
-          return View["user_taken.cshtml"];
+          return View["user_taken.cshtml", currentUser];
         }
         else
         {
           User newUser = new User(Request.Form["user-name"], Request.Form["display-preference"]);
           newUser.Save();
-          User currentUser = User.GetCurrentUser();
-          return View["index.cshtml", currentUser];
+          newUser.SetCurrentUser();
+          User currentUser2 = User.GetCurrentUser();
+          return View["index.cshtml", currentUser2];
         }
       };
 
